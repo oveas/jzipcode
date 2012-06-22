@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form name="jzipcode">
+	<fieldset name="jzipcode">
+		<field
+			name="zipcode1"
+			type="text"
+			label="COM_JZIPCODE_CALCULATE_ZIPCODE1"
+			description="COM_JZIPCODE_CALCULATE_ZIPCODE1_DESC"
+			required="true"
+			size="5"
+		/>
+		<field name="country1"
+			type="sql"
+			label="COM_JZIPCODE_CALCULATE_COUNTRY1"
+			description="COM_JZIPCODE_CALCULATE_COUNTRY1_DESC"
+			query="SELECT country_code, country_name FROM #__jzc_country WHERE published = 1"
+			key_field="country_code"
+			value_field="country_name"
+			required="true"
+		/>
+		<field
+			name="zipcode2"
+			type="text"
+			label="COM_JZIPCODE_CALCULATE_ZIPCODE2"
+			description="COM_JZIPCODE_CALCULATE_ZIPCODE2_DESC"
+			required="true"
+			size="5"
+		/>
+		<field name="country2"
+			type="sql"
+			label="COM_JZIPCODE_CALCULATE_COUNTRY2"
+			description="COM_JZIPCODE_CALCULATE_COUNTRY2_DESC"
+			query="SELECT country_code, country_name FROM #__jzc_country WHERE published = 1"
+			key_field="country_code"
+			value_field="country_name"
+			required="true"
+		/>
+	</fieldset>
+</form>

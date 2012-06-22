@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset>
+		<field id="data_package"
+			name="data_package"
+			type="file"
+		/>
+	</fieldset>
+</form>

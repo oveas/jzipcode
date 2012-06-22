@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5" type="plugin" group="jzipcode">
+	<name>plg_jzipcode_distance</name>
+	<creationDate>June 2012</creationDate>
+	<author>Oscar van Eijk</author>
+	<authorEmail>oscar.van.eijk@oveas.com</authorEmail>
+	<authorUrl>http://www.oveas.com</authorUrl>
+	<copyright>Copyright (c) 2012 - Oveas Functionality Provider and VergelijkVerhuur.nl. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later</license>
+	<version>0.1.0</version>
+	<description>PLG_JZIPCODE_DISTANCE_XML_DESCRIPTION</description>
+
+	<files>
+		<filename plugin="distance">distance.php</filename>
+		<filename>index.html</filename>
+	</files>
+
+	<languages>
+		<language tag="en-GB">en-GB.plg_jzipcode_distance.ini</language>
+		<language tag="en-GB">en-GB.plg_jzipcode_distance.sys.ini</language>
+	</languages>
+
+	<config>
+			<fields name="params">
+			<fieldset name="jzipcode_config"
+				label="PLG_JZIPCODE_DISTANCE_CONFIG_SETTINGS_LABEL"
+				description="PLG_JZIPCODE_DISTANCE_CONFIG_SETTINGS_DESC"
+			>
+				<field name="distance_unit"
+					type="text"
+					label="PLG_JZIPCODE_DISTANCE_CONFIG_SETTINGS_FIELD_DISTANCE_UNITNAME_LABEL"
+					description="PLG_JZIPCODE_DISTANCE_CONFIG_SETTINGS_FIELD_DISTANCE_UNITNAME_DESC"
+					default="KM"
+					size="12"
+				/>
+
+				<field name="earth_radius"
+					type="radio"
+					label="PLG_JZIPCODE_DISTANCE_CONFIG_SETTINGS_FIELD_DISTANCE_UNIT_LABEL"
+					description="PLG_JZIPCODE_DISTANCE_CONFIG_SETTINGS_FIELD_DISTANCE_UNIT_DESC"
+					default="6372.797"
+				>
+					<option value="6372.797">PLG_JZIPCODE_DISTANCE_CONFIG_SETTINGS_FIELD_DISTANCE_UNIT_KM</option>
+					<option value="3959.872">PLG_JZIPCODE_DISTANCE_CONFIG_SETTINGS_FIELD_DISTANCE_UNIT_ML</option>
+				</field>
+
+				<field name="default_country"
+					type="sql"
+					label="PLG_JZIPCODE_DISTANCE_CONFIG_SETTINGS_FIELD_DEFAULT_COUNTRY_LABEL"
+					description="PLG_JZIPCODE_DISTANCE_CONFIG_SETTINGS_FIELD_DEFAULT_COUNTRY_DESC"
+					query="SELECT country_code, country_name FROM #__jzc_country WHERE published = 1"
+					key_field="country_code"
+					value_field="country_name"
+				/>
+
+				<field name="precision"
+					type="text"
+					label="PLG_JZIPCODE_DISTANCE_CONFIG_SETTINGS_FIELD_PRECISION_LABEL"
+					description="PLG_JZIPCODE_DISTANCE_CONFIG_SETTINGS_FIELD_PRECISION_DESC"
+					default="1"
+					size="2"
+				/>
+			</fieldset>
+		</fields>
+	</config>
+	<updateservers>
+		<server type="extension" priority="1" name="J!Zipcode Update Site">http://jzipcode.oveas.com/update/plg_distance-update.xml</server>
+	</updateservers>
+	
+</extension>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset>
+		<field id="id"
+			name="id"
+			type="hidden"
+		/>
+		<field id="country_name"
+			name="country_name"
+			type="text"
+			label="COM_JZIPCODE_COUNTRY_NAME_LABEL"
+			description="COM_JZIPCODE_COUNTRY_NAME_DESC"
+			size="40"
+			class="inputbox"
+			required="true"
+			default=""
+		/>
+		<field id="country_code"
+			name="country_code"
+			type="text"
+			label="COM_JZIPCODE_COUNTRY_CODE_LABEL"
+			description="COM_JZIPCODE_COUNTRY_CODE_DESC"
+			size="2"
+			class="inputbox"
+			required="true"
+			default=""
+		/>
+		<field id="data_source"
+			name="data_source"
+			type="text"
+			label="COM_JZIPCODE_COUNTRY_SOURCE_LABEL"
+			description="COM_JZIPCODE_COUNTRY_SOURCE_DESC"
+			size="40"
+			class="inputbox"
+			default=""
+		/>
+		<field id="data_prepared"
+			name="data_prepared"
+			type="text"
+			label="COM_JZIPCODE_COUNTRY_PREPARED_LABEL"
+			description="COM_JZIPCODE_COUNTRY_PREPARED_DESC"
+			size="40"
+			class="inputbox"
+			default=""
+		/>
+		<field id="published"
+			name="published"
+			type="list"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC"
+			class="inputbox"
+			size="1"
+			default="1"
+		>
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+			<option value="2">JARCHIVED</option>
+			<option value="-2">JTRASHED</option>
+		</field>
+
+		<field name="zipcount"
+			type="text"
+			label="COM_JZIPCODE_JZIPCODE_HEADING_ZIPCOUNT"
+			description="COM_JZIPCODE_JZIPCODE_HEADING_ZIPCOUNT"
+			size="10"
+			default="0"
+			readonly="true"
+			class="readonly"
+			filter="unset"
+		/>
+
+		<field name="checked_out"
+			type="hidden"
+			filter="unset"
+		/>
+
+		<field name="checked_out_time"
+			type="hidden"
+			filter="unset"
+		/>
+		
+	</fieldset>
+</form>

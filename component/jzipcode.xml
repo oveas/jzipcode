@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="2.5.0" method="upgrade">
+	<name>COM_JZIPCODE</name>
+	<creationDate>May 2012</creationDate>
+	<author>Oscar van Eijk</author>
+	<authorEmail>oscar.van.eijk@oveas.com</authorEmail>
+	<authorUrl>http://www.oveas.com</authorUrl>
+	<copyright>Copyright (c) 2012 - Oveas Functionality Provider and VergelijkVerhuur.nl. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later</license>
+	<version>0.1.0</version>
+	<description>COM_JZIPCODE_DESCRIPTION</description>
+
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>jzipcode.php</filename>
+		<filename>controller.php</filename>
+		<folder>views</folder>
+		<folder>models</folder>
+		<folder>language</folder>
+	</files>
+ 
+	<administration>
+		<menu>COM_JZIPCODE_MENU</menu>
+		<files folder="admin">
+			<filename>index.html</filename>
+			<filename>jzipcode.php</filename>
+			<filename>controller.php</filename>
+			
+			<folder>sql</folder>
+			<folder>tables</folder>
+			<folder>models</folder>
+			<folder>views</folder>
+			<folder>controllers</folder>
+		</files>
+
+		<languages folder="admin">
+			<language tag="en-GB">language/en-GB/en-GB.com_jzipcode.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_jzipcode.sys.ini</language>
+		</languages>
+	</administration>
+
+	<updateservers>
+		<server type="extension" priority="1" name="J!Zipcode Update Site">http://jzipcode.oveas.com/update/com_jzipcode-update.xml</server>
+	</updateservers>
+
+</extension>
