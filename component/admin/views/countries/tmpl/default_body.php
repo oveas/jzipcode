@@ -29,7 +29,7 @@ defined('_JEXEC') or die('Restricted Access');
 		</td>
 		<td>
 			<?php if ($item->data_date != '0000-00-00') {
-				echo JHtml::_('data_date', $item->date, JText::_('DATE_FORMAT_LC'));
+				echo JHtml::_('date', $item->data_date, JText::_('DATE_FORMAT_LC'));
 			} ?>
 		</td>
 	</tr>
