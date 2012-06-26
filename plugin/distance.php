@@ -28,27 +28,35 @@ class plgJZipcodeDistance extends JPlugin
 	/**
 	 * Validate the parameters and convert to an array if necessary.
 	 * @param	mixed	$zipcodeFrom	Zipcode or an array with the keys 'zip' and 'country'
-	 * @param	mixed	$zipcodeTo		Zipcode or an array with the keys 'zip' and 'country'
+	 * @param	mixed	$zipcodeTo		Zipcode or an array with the keys 'zip' and 'country' or null for a tablefield (ignored here)
 	 * @return	bool	True on succes
 	 */
-	private function _validateZipcodeParams(&$zipcodeFrom, &$zipcodeTo)
+	private function _validateZipcodeParams(&$zipcodeFrom, &$zipcodeTo = null)
 	{
 		if (!is_array($zipcodeFrom)) {
-			$zipcodeFrom = array('zip' => $zipcodeFrom, 'county' => $this->params->get('default_country'));
+			$zipcodeFrom = array('zip' => $zipcodeFrom, 'country' => $this->params->get('default_country'));
 		}
-		if (!is_array($zipcodeTo)) {
-			$zipcodeFrom = array('zip' => $zipcodeTo, 'county' => $this->params->get('default_country'));
+		if (!is_array($zipcodeTo) && $zipcodeTo !== null) {
+			$zipcodeTo = array('zip' => $zipcodeTo, 'country' => $this->params->get('default_country'));
 		}
-
 		if (!array_key_exists('zip', $zipcodeFrom)
 					|| !array_key_exists('country', $zipcodeFrom)
-					|| !array_key_exists('zip', $zipcodeTo)
-					|| !array_key_exists('country', $zipcodeTo)
+					|| (
+						$zipcodeTo !== null &&
+							(!array_key_exists('zip', $zipcodeTo)
+								|| !array_key_exists('country', $zipcodeTo)
+						)
+					)
 				) {
-			$this->_subject->setError(PLG_JZIPCODE_DISTANCE_INVALID_PARAM);
+			$this->_subject->setError('PLG_JZIPCODE_DISTANCE_INVALID_PARAM');
 			return false;
 		}
-
+		$zipcodeFrom['zip'] = strtoupper($zipcodeFrom['zip']);
+		$zipcodeFrom['zip'] = preg_replace('/\s+/', '', $zipcodeFrom['zip']);
+		if ($zipcodeTo !== null) {
+			$zipcodeTo['zip'] = strtoupper($zipcodeTo['zip']);
+			$zipcodeTo['zip'] = preg_replace('/\s+/', '', $zipcodeTo['zip']);
+		}
 		return true;
 	}
 
@@ -76,7 +84,7 @@ class plgJZipcodeDistance extends JPlugin
 			return false;
 		}
 		if ($result === null || count($result) == 0) {
-			$this->_subject->setError(PLG_JZIPCODE_DISTANCE_NO_RESULTS, $zip, $country);
+			$this->_subject->setError('PLG_JZIPCODE_DISTANCE_NO_RESULTS', $zip, $country);
 			return false;
 		}
 		return $result;
@@ -123,17 +131,24 @@ class plgJZipcodeDistance extends JPlugin
 	}
 
 	/**
-	 * Create the SQL query to calculate the distance between 2 zipcodes
+	 * Create the SQL query to calculate the distance between 2 zipcodes.
+	 * This plugin works only within the default country!
 	 * @param	mixed	$zipcodeFrom	Zipcode or an array with the keys 'zip' and 'country'
-	 * @param	mixed	$zipcodeTo		Zipcode or an array with the keys 'zip' and 'country'
+	 * @param	mixed	$zipcodeField	Field to compare with in the format 'table(alias).field.key',
+	 * where 'table' is the table name from which the zipcode is taken, 'field' is the zipcode field
+	 * and 'key' is the primary key of 'table'. 'Table' must be in the callers query.
 	 * @return	string	SQL query that can be used as a subselect, false on errors
 	 */
-	public function onJZipcodeGetQuery($zipcodeFrom, $zipcodeTo)
+	public function onJZipcodeGetQuery($zipcodeFrom, $zipcodeField)
 	{
-		if ($this->_validateZipcodeParams($zipcodeFrom, $zipcodeTo) === false) {
+		if ($this->_validateZipcodeParams($zipcodeFrom) === false) {
 			return false;
 		}
-
+		$zipTo = explode('.', $zipcodeField);
+		if (count($zipTo) != 3) {
+			$this->_subject->setError('PLG_JZIPCODE_DISTANCE_INVALID_PARAM');
+			return false;
+		}
 		return '(SELECT ROUND( '
 			. ' (2 * ATAN2( '
 			. '   SQRT( '
@@ -150,15 +165,19 @@ class plgJZipcodeDistance extends JPlugin
 			. '      * COS((jzc_zipcode_b.latitude * (PI() / 180))) '
 			. '      * SIN(((jzc_zipcode_b.longitude * (PI() / 180))-(jzc_zipcode_a.longitude * (PI() / 180))) / 2) '
 			. '      * SIN(((jzc_zipcode_b.longitude * (PI() / 180))-(jzc_zipcode_a.longitude * (PI() / 180))) / 2)) '
-			. '   ) * '.$this->params->get('precision').' '
-			. '  ), '.$this->params->get('earth_radius').') '
+			. '   ) * '.$this->params->get('earth_radius').' '
+			. '  ), '.$this->params->get('precision').') '
 			. 'FROM #__jzc_zipcode AS jzc_zipcode_a '
 			. ',    #__jzc_zipcode AS jzc_zipcode_b '
 			. "WHERE jzc_zipcode_a.zip_code = '".$zipcodeFrom['zip']."' "
 			. "  AND jzc_zipcode_a.country_code = '".$zipcodeFrom['country']."' "
-			. "  AND jzc_zipcode_b.zip_code = '".$zipcodeTo['zip']."' "
-			. "  AND jzc_zipcode_b.country_code = '".$zipcodeTo['country']."' "
+			. '  AND jzc_zipcode_b.zip_code = ( '
+				. "SELECT UPPER(REPLACE($zipTo[1], ' ', '')) "
+				. "FROM $zipTo[0] AS jzc_jointable "
+				. "WHERE $zipTo[2] = $zipTo[0].$zipTo[2]) "
+			. "  AND jzc_zipcode_b.country_code = '".$this->params->get('default_country')."' "
 			. ') ';
+
 	}
 
 	/**
