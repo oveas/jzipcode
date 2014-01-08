@@ -1,7 +1,7 @@
 <?php
 /**
  * This file is part of J!Zipcode
- * @copyright	Copyright (C) 2012 Oveas Functionality Provider and VergelijkVerhuur.nl. All rights reserved.
+ * @copyright	Copyright (C) 2012-2014 Oveas Functionality Provider and VergelijkVerhuur.nl. All rights reserved.
  * @author		Oscar van Eijk, Oveas Functionality Provider (http://oveas.com)
  * @license		GNU General Public License version 2 or later
  */
@@ -23,6 +23,34 @@ class plgJZipcodeDistance extends JPlugin
 	{
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
+	}
+
+	/**
+	 * Make sure we have exactly 1 zipcode by selecting all matching zipcodes from the database and return the middle one
+	 * @param	string	$zip	Zipcode to check
+	 * @param	string 	$country	Country for which the zipcode of checked
+	 * @return	mixed	Single zipcode of false when none was found
+	 */
+	private function _getUniqueZip ($zip, $country)
+	{
+		$db = JFactory::getDbo();
+		$db->setQuery('SELECT zip_code '
+				. 'FROM '.$db->quoteName('#__jzc_zipcode')
+				. "WHERE zip_code LIKE '".strtoupper($zip)."%' "
+				. "AND country_code = '".strtoupper($country)."'"
+		);
+
+		$results = $db->loadResultArray();
+		if ($db->getErrorNum()) {
+			$this->_subject->setError($db->getErrorMsg());
+			return false;
+		}
+		if ($results === null || count($results) == 0) {
+			$this->_subject->setError('PLG_JZIPCODE_DISTANCE_NO_ZIPCODE', $zip, $country);
+			return false;
+		}
+		// Pick the middle one
+		return $results[round(count($results)-1)];
 	}
 
 	/**
@@ -53,9 +81,14 @@ class plgJZipcodeDistance extends JPlugin
 		}
 		$zipcodeFrom['zip'] = strtoupper($zipcodeFrom['zip']);
 		$zipcodeFrom['zip'] = preg_replace('/\s+/', '', $zipcodeFrom['zip']);
+		$zipcodeFrom['zip'] = $this->_getUniqueZip($zipcodeFrom['zip'], $zipcodeFrom['country']);
 		if ($zipcodeTo !== null) {
 			$zipcodeTo['zip'] = strtoupper($zipcodeTo['zip']);
 			$zipcodeTo['zip'] = preg_replace('/\s+/', '', $zipcodeTo['zip']);
+			$zipcodeTo['zip'] = $this->_getUniqueZip($zipcodeFrom['zip'], $zipcodeFrom['country']);
+		}
+		if ($zipcodeFrom['zip'] === false || $zipcodeTo['zip'] === false) {
+			return false;
 		}
 		return true;
 	}

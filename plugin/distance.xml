@@ -5,9 +5,9 @@
 	<author>Oscar van Eijk</author>
 	<authorEmail>oscar.van.eijk@oveas.com</authorEmail>
 	<authorUrl>http://www.oveas.com</authorUrl>
-	<copyright>Copyright (c) 2012 - Oveas Functionality Provider and VergelijkVerhuur.nl. All rights reserved.</copyright>
+	<copyright>Copyright (c) 2012-2014 - Oveas Functionality Provider and VergelijkVerhuur.nl. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
-	<version>0.1.0</version>
+	<version>0.1.1</version>
 	<description>PLG_JZIPCODE_DISTANCE_XML_DESCRIPTION</description>
 
 	<files>
