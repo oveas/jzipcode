@@ -1,6 +1,7 @@
 .buildpath
 .project
 .settings/
+marketplacePatch/
 *.zip
 createPackage.sh
 db/

@@ -7,7 +7,7 @@
 	<authorUrl>http://www.oveas.com</authorUrl>
 	<copyright>Copyright (c) 2012-2014 - Oveas Functionality Provider and VergelijkVerhuur.nl. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
-	<version>0.1.1</version>
+	<version>0.1.2</version>
 	<description>PLG_JZIPCODE_DISTANCE_XML_DESCRIPTION</description>
 
 	<files>
@@ -18,6 +18,8 @@
 	<languages>
 		<language tag="en-GB">en-GB.plg_jzipcode_distance.ini</language>
 		<language tag="en-GB">en-GB.plg_jzipcode_distance.sys.ini</language>
+		<language tag="nl-NL">nl-NL.plg_jzipcode_distance.ini</language>
+		<language tag="nl-NL">nl-NL.plg_jzipcode_distance.sys.ini</language>
 	</languages>
 
 	<config>

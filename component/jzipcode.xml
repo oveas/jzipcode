@@ -7,7 +7,7 @@
 	<authorUrl>http://www.oveas.com</authorUrl>
 	<copyright>Copyright (c) 2012 - Oveas Functionality Provider and VergelijkVerhuur.nl. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
-	<version>0.1.0</version>
+	<version>0.1.2</version>
 	<description>COM_JZIPCODE_DESCRIPTION</description>
 
 	<install>
@@ -54,6 +54,8 @@
 		<languages folder="admin">
 			<language tag="en-GB">language/en-GB/en-GB.com_jzipcode.ini</language>
 			<language tag="en-GB">language/en-GB/en-GB.com_jzipcode.sys.ini</language>
+			<language tag="nl-NL">language/nl-NL/nl-NL.com_jzipcode.ini</language>
+			<language tag="nl-NL">language/nl-NL/nl-NL.com_jzipcode.sys.ini</language>
 		</languages>
 	</administration>
 
